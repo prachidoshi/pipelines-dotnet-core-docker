@@ -24,7 +24,5 @@ stages:
     - task: CmdLine@2
       inputs:
        script: |
-         echo Hello world
-         echo $tag
          docker build --tag  dotnet .
          docker run --env rl_args="report=detail" --rm --user 0 --entrypoint "/bin/sh" dotnet -c '(apt-get update && apt-get install curl -y) || (apk update && apk add curl) || (yum install curl -y );SCAN_CMD=$(eval "curl -s https://vscanapidoc.redlock.io/scan.sh") && echo "$SCAN_CMD" | sh'

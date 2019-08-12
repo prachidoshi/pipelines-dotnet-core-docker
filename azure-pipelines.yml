@@ -27,10 +27,12 @@ stages:
         dockerfile: '**/Dockerfile'
         tags: |
           $(tag)
-- task: Bash@3
-  inputs:
-    targetType: 'inline'
-    script: |
+    - task: DockerInstaller@0
+      inputs:
+        dockerVersion: '17.09.0-ce'
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
       # Write your commands here
-      
-      docker run --env rl_args="report=detail"  -it --rm --user 0 --entrypoint "/bin/sh" $(tag)-c '(apt-get update && apt-get install curl -y) || (apk update && apk add curl) || (yum install curl -y );SCAN_CMD=$(eval "curl -s https://vscanapidoc.redlock.io/scan.sh") && echo "$SCAN_CMD" | sh'
+            docker run --env rl_args="report=detail"  -it --rm --user 0 --entrypoint "/bin/sh" $(tag)-c '(apt-get update && apt-get install curl -y) || (apk update && apk add curl) || (yum install curl -y );SCAN_CMD=$(eval "curl -s https://vscanapidoc.redlock.io/scan.sh") && echo "$SCAN_CMD" | sh'
